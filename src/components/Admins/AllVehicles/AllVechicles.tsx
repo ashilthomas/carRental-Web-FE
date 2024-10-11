@@ -2,6 +2,9 @@ import React, { useCallback, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import instance from '../../../Axios/Instance';
 import { setAdminVehicles, setError, setLoading, } from '../../../Redux/vechicleSlice';
+import AdminSlider from '../AdminSlider/AdminSlider';
+import { openAdminSlide } from '../../../Redux/globelSlice';
+import Loader from '../../Loader/Loader';
 
 
 
@@ -9,7 +12,8 @@ import { setAdminVehicles, setError, setLoading, } from '../../../Redux/vechicle
 function AllVechicles() {
   const dispatch = useAppDispatch(); 
   const { adminVehicles ,loading,error} = useAppSelector((state) => state.vehicles);
-  console.log("jsdhfjkdsh",adminVehicles);
+
+  
   
 
   // Fetch vehicles function
@@ -44,13 +48,23 @@ function AllVechicles() {
     fetchVehicles(); 
   }, [fetchVehicles]);
 
-  if (loading) return <p>Loading...</p>; // Loading state
+  const openNav = () => {
+    dispatch(openAdminSlide());
+  };
+  if (loading) return <Loader/>; // Loading state
   if (error) return <p>Error: {error}</p>; // Error state
 
   return (
-    <section>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+
+      <div className="overflow-x-auto flex bg-primary ">
+        <AdminSlider/>
+        <span className="text-3xl ml-4 text-black cursor-pointer mb-3" onClick={openNav}>
+&#9776;
+</span>
+<div className='w-[1300px] m-auto py-4 pr-4'>
+
+
+        <table className="min-w-full dark:bg-gray-900 bg-white  shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-100 border-b">
             <tr>
               <th className="text-left px-6 py-3 text-gray-600">Id</th>
@@ -106,9 +120,9 @@ function AllVechicles() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table></div>
       </div>
-    </section>
+  
   );
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 function AboutSection() {
   return (
-    <section className="bg-black text-white py-16 px-8"
+    <section className="bg-[#222] dark:bg-black text-white py-16 px-8"
     
     
     
@@ -10,11 +10,11 @@ function AboutSection() {
     <div className="container mx-auto max-w-screen-lg m-auto flex flex-col lg:flex-row items-center justify-between">
       {/* Left Content */}
       <div className="lg:w-1/2 mb-12 lg:mb-0">
-        <span className="text-yellow-400 uppercase tracking-widest text-sm font-bold">Rentax</span>
-        <h2 className="text-4xl lg:text-4xl font-bold mt-4 mb-6">
+        <span className="text-secondary uppercase tracking-widest text-sm font-bold">Rentax</span>
+        <h2 className="text-4xl lg:text-4xl font-bold text-white  mt-4 mb-6">
           We Are More Than <br /> A Car Rental Company
         </h2>
-        <p className="text-gray-400 text-sm font-light mb-6 leading-8 w-full lg:w-4/5">
+        <p className="text-gray-400  text-sm font-light mb-6 leading-8 w-full lg:w-4/5">
           Car repair quisque sodales dui ut varius vestibulum drana tortor turpis porttiton tellus eu
           euismod nisl massa nutodio in the miss volume place urna lacinia eros nuntala urna mauris 
           vehicula rutrum in the miss on volume interdum.
@@ -23,17 +23,17 @@ function AboutSection() {
         {/* Bullet Points */}
         <ul className="mb-6 space-y-4">
           <li className="flex items-center space-x-2">
-            <span className="bg-[#222] rounded-full h-6 w-6 flex justify-center items-center text-yellow-500 font-bold">✓</span>
+            <span className="bg-[#222] rounded-full h-6 w-6 flex justify-center items-center text-secondary font-bold">✓</span>
             <span className='text-sm text-gray-400'>Sports and Luxury Cars</span>
           </li>
           <li className="flex items-center space-x-2">
-            <span className="bg-[#222] rounded-full h-6 w-6 flex justify-center items-center text-yellow-500 font-bold">✓</span>
+            <span className="bg-[#222] rounded-full h-6 w-6 flex justify-center items-center text-secondary font-bold">✓</span>
             <span className='text-sm text-gray-400'>Economy Cars</span>
           </li>
         </ul>
   
         {/* Read More Button */}
-        <button className="bg-yellow-400 text-black py-3 px-6 rounded-full text-sm font-light hover:bg-yellow-500 transition duration-300">
+        <button className="bg-secondary text-white py-3 px-6 rounded-full text-sm font-light hover:bg-secondary transition duration-300">
           Read More &rarr;
         </button>
       </div>

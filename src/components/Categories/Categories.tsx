@@ -37,10 +37,10 @@ const Carousel: React.FC = () => {
   };
 
   return (
-    <section className="pt-24 pb-24 bg-[#222]">
+    <section className="pt-24 pb-24  dark:bg-black bg-[#222]">
     <div className="w-full max-w-4xl mx-auto"> 
-          <h6 className="text-center text-xs text-yellow-500 mb-5 font-light tracking-[6px]">CATEGORIES</h6>
-        <h1 className="text-center text-4xl text-white mb-5 font-bold">Rental Car Types</h1>
+          <h6 className="text-center text-xs text-secondary mb-5 font-light tracking-[6px]">CATEGORIES</h6>
+        <h1 className="text-center text-4xl dark:text-white text-black mb-5 font-bold">Rental Car Types</h1>
      
       
       <div className="overflow-hidden">
@@ -72,13 +72,13 @@ const Carousel: React.FC = () => {
       {/* Navigation Buttons */}
       <div className="flex justify-center mt-4 gap-2">
         <button
-          className="bg-yellow-500 text-white px-2 py-2 rounded-full hover:bg-white transition"
+          className="bg-secondary text-white px-2 py-2 rounded-full hover:bg-white transition"
           onClick={prevSlide}
         >
           
         </button>
         <button
-          className="bg-yellow-500 text-white px-2 py-2 rounded-full hover:bg-white transition"
+          className="bg-secondary text-white px-2 py-2 rounded-full hover:bg-white transition"
           onClick={nextSlide}
         >
          

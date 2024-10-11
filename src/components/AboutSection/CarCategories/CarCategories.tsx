@@ -15,8 +15,10 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import CarCard from '../../CarCard/CarCard'
 import instance from '../../../Axios/Instance'
-import { setVehicles } from '../../../Redux/vechicleSlice'
+import { setLoading, setVehicles } from '../../../Redux/vechicleSlice'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
+import Loader from '../../Loader/Loader'
+import debounce from 'lodash.debounce'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -26,12 +28,13 @@ const sortOptions = [
   { name: 'Price: High to Low', href: '#', current: false },
 ]
 const subCategories = [
-  { name: 'Totes', href: '#' },
-  { name: 'Backpacks', href: '#' },
-  { name: 'Travel Bags', href: '#' },
-  { name: 'Hip Bags', href: '#' },
-  { name: 'Laptop Sleeves', href: '#' },
+  { name: 'Convertible', href: '#' },
+  { name: 'Sedan', href: '#' },
+  { name: 'Small Cars', href: '#' },
+  { name: 'Sport Cars', href: '#' },
+  { name: 'SUV', href: '#' },
 ]
+
 const filters = [
   {
     id: 'color',
@@ -78,28 +81,77 @@ function classNames(...classes:any[]) {
 }
 
 function CarCategories() {
-    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-      
-  const { vehicles, loading, error } = useAppSelector((state) => state.vehicles);
-  console.log("redux",vehicles);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [noResults, setNoResults] = useState<boolean>(false); // Tracks the search term input
   
-const dispatch =useAppDispatch()
-  const fetchCategories =async()=>{
+  const { vehicles, loading, error } = useAppSelector((state) => state.vehicles);
+  const dispatch = useAppDispatch();
+  console.log("hjkhdskfhd",vehicles);
+  
+
+ 
+  const fetchCategories = async () => {
+    dispatch(setLoading()); 
     try {
-      const response = await instance.get(`vechicle/nmsearchvechicle?q=${''}&sortBy=latest&sortOrder=desc&page=${1}&limit=${10}`)
-      console.log(response.data.vehicles);
-      
-      
+      const response = await instance.get(
+        `vechicle/nmsearchvechicle?q=${searchTerm}&sortBy=latest&sortOrder=desc&page=${page}&limit=${limit}`
+      );
       dispatch(setVehicles(response.data.vehicles)); 
-    } catch (error:any) {
+
       
+      if(response.data.success=== false){
+      setNoResults(true)
     }
+     else {
+      setNoResults(false); // Reset if vehicles are found
+      dispatch(setVehicles(response.data.vehicles)); 
+      setTotalPages(response.data.totalPages);
+    }
+    
+
+    } catch (error: any) {
+      console.error('Error fetching vehicles:', error);
+    }
+  };
+
+  // Debounced function to delay the API call on search input change
+  const debouncedFetch = debounce(() => {
+    setPage(1); // Reset the page to 1 when the search term changes
+  }, 500); // Delay of 500ms after user stops typing
+
+  // Trigger the API call when `page` or `searchTerm` changes
+  useEffect(() => {
+    fetchCategories(); // Fetch vehicles whenever `page` or `searchTerm` changes
+  }, [page, searchTerm]); // Dependencies: page and searchTerm
+
+  // Handle search input changes
+  const handleSearchChange = (e: any) => {
+    console.log(e);
+    
+    setSearchTerm(e.target.value); // Update the search term state
+    debouncedFetch(); // Trigger the debounced function to handle search
+  };
+
+ const handileSearchFilter =(val:string)=>{
+ setSearchTerm(val)
+  
 
   }
-  useEffect(()=>{
-    fetchCategories()
-  },[])
- 
+
+  // Pagination handler
+  const handlePageChange = (newPage: number) => {
+
+    if (newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage); // Update the page number
+    }
+  };
+
+  if (loading) return <Loader />;
+  if(error) return <Loader />;
   return (
     <div className="bg-[#1b1b1b]">
     <div>
@@ -132,7 +184,7 @@ const dispatch =useAppDispatch()
               <h3 className="sr-only">Categories</h3>
               <ul role="list" className="px-2 py-3 font-medium text-gray-900">
                 {subCategories.map((category) => (
-                  <li key={category.name}>
+                  <li key={category.name}   >
                     <a href={category.href} className="block px-2 py-3">
                       {category.name}
                     </a>
@@ -144,7 +196,7 @@ const dispatch =useAppDispatch()
                 <Disclosure key={section.id} as="div" className="border-t border-gray-200 px-4 py-6">
                   <h3 className="-mx-2 -my-3 flow-root">
                     <DisclosureButton className="group flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                      <span className="font-medium text-gray-900">{section.name}</span>
+                      <span className="font-medium text-gray-900 "   >{section.name}</span>
                       <span className="ml-6 flex items-center">
                         <PlusIcon aria-hidden="true" className="h-5 w-5 group-data-[open]:hidden" />
                         <MinusIcon aria-hidden="true" className="h-5 w-5 [.group:not([data-open])_&]:hidden" />
@@ -184,8 +236,12 @@ const dispatch =useAppDispatch()
         <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
       
           <form action="" className='border rounded-full py-3 px-2 ' >
-            <input type="text" className='bg-inherit  outline-0' placeholder='Enter your car' />
-            <button className='bg-white px-4 py-2 rounded-full mr-3' >$</button>
+            <input onChange={handleSearchChange} value={searchTerm} type="text" className='bg-inherit  outline-0 text-white' placeholder='Enter your car' />
+            <button className="bg-secondary px-4 py-2 rounded-full mr-3">
+  <span className="inline-block hover:rotate-90 duration-300">
+    $
+  </span>
+</button>
           </form>
           {
             //dslkljfldjsfljdslfjldsfjlsdfjlsdj
@@ -262,7 +318,7 @@ const dispatch =useAppDispatch()
         className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-[#999]"
       >
         {subCategories.map((category) => (
-          <li key={category.name}>
+          <li key={category.name} onClick={()=>handileSearchFilter(category.name)} >
             <a href={category.href}>{category.name}</a>
           </li>
         ))}
@@ -309,90 +365,102 @@ const dispatch =useAppDispatch()
     {/* Main content */}
     <div className="lg:col-span-1">
       {/* Vehicle list */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {vehicles.map((items) => (
-          <CarCard
-            key={items.carModel}
-            carImage={items.carImage}
-            carModel={items.carModel}
-            pricePerDay={items.pricePerDay}
-            details={items.details}
-            available={items.available}
-          />
-        ))}
-      </div>
+      <div>
+  {noResults ? (
+    // Display a "No Results" message when no vehicles are found
+    <div className="text-center text-gray-500">
+      <p>No vehicles found. Please try a different search term or filter.</p>
+    </div>
+  ) : (
+    // Render the vehicles grid when results are available
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {vehicles?.map((items) => (
+        <CarCard
+          key={items._id} // Use _id for the key instead of carModel for uniqueness
+          _id={items._id}
+          carImage={items.carImage}
+          carModel={items.carModel}
+          pricePerDay={items.pricePerDay}
+          details={items.details}
+          available={items.available}
+        />
+      ))}
+    </div>
+  )}
+</div>
     </div>
   </div>
+  <div className="bg-[#1b1b1b]">
+      {/* Your UI content */}
+      <div className="flex justify-center mt-8">
+  {/* Previous Button */}
+  <button
+    onClick={() => handlePageChange(page - 1)}
+    disabled={page === 1}
+    className={`px-4 py-2 mx-2 rounded-full ${
+      page === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'
+    }`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-5 h-5 text-white"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+  </button>
+
+  {/* Page Numbers */}
+  <div className="flex space-x-2">
+    {[...Array(totalPages)].map((_, i) => (
+      <button
+        key={`page-${i + 1}`} // More descriptive key
+        onClick={() => handlePageChange(i + 1)}
+        className={`px-4 py-2 rounded-full ${
+          page === i + 1 ? 'bg-secondary text-white' : 'bg-gray-200 hover:bg-primary hover:text-white'
+        }`}
+      >
+        {i + 1}
+      </button>
+    ))}
+  </div>
+
+  {/* Next Button */}
+  <button
+    onClick={() => handlePageChange(page + 1)}
+    disabled={page === totalPages}
+    className={`px-4 py-2 mx-2 rounded-full ${
+      page === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'
+    }`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-5 h-5 text-white"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+</div>
+
+    </div>
 </section>
 
       </main>
+
+      
+   
     </div>
+
   </div>
   )
 }
 
 export default CarCategories
 
-
-// {/* <section aria-labelledby="products-heading" className="pb-24 pt-6">
-// <h2 id="products-heading" className="sr-only">
-//   Products
-// </h2>
-
-// <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-//   {/* Filters */}
-//   <form className="hidden lg:block bg-[#222] p-4 rounded-lg">
-//     <h3 className="sr-only">Categories</h3>
-//     <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-[#999]">
-//       {subCategories.map((category) => (
-//         <li key={category.name}>
-//           <a href={category.href}>{category.name}</a>
-//         </li>
-//       ))}
-//     </ul>
-
-//     {filters.map((section) => (
-//       <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
-//         <h3 className="-my-3 flow-root">
-//           <DisclosureButton className="group flex w-full items-center justify-between py-3 text-sm text-[#999] hover:text-gray-500">
-//             <span className="font-medium text-[#999]">{section.name}</span>
-//             <span className="ml-6 flex items-center">
-//               <PlusIcon aria-hidden="true" className="h-5 w-5 group-data-[open]:hidden" />
-//               <MinusIcon aria-hidden="true" className="h-5 w-5 [.group:not([data-open])_&]:hidden" />
-//             </span>
-//           </DisclosureButton>
-//         </h3>
-//         <DisclosurePanel className="pt-6">
-//           <div className="space-y-4">
-//             {section.options.map((option, optionIdx) => (
-//               <div key={option.value} className="flex items-center">
-//                 <input
-//                   defaultValue={option.value}
-//                   defaultChecked={option.checked}
-//                   id={`filter-${section.id}-${optionIdx}`}
-//                   name={`${section.id}[]`}
-//                   type="checkbox"
-//                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-//                 />
-//                 <label htmlFor={`filter-${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
-//                   {option.label}
-//                 </label>
-//               </div>
-//             ))}
-//           </div>
-//         </DisclosurePanel>
-//       </Disclosure>
-//     ))}
-//   </form>
-
-//   {
-//    vehicles.map((items)=>(
-//     <CarCard carImage={items.carImage} carModel={items.carModel} pricePerDay={items.pricePerDay} details={items.details} available={items.available}/>
-
-//    ))
-//   }
-
-
-//   <div className="lg:col-span-3">{/* Your content */}</div>
-// </div>
-// </section> */}

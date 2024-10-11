@@ -3,6 +3,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 
 import { headerBar } from '../../types/Utils'
 import { Link } from 'react-router-dom'
+import DarkModeToggle from '../DarkMode/DarkMode'
 
 
 function Header({setOpen,open}:headerBar) {
@@ -44,7 +45,7 @@ function Header({setOpen,open}:headerBar) {
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-between">
             <div className="flex flex-shrink-0 items-center">
               <Link to={"/"}>
-             <h2 className='text-3xl font-bold text-white'>Prem<span className='text-yellow-400'>ium</span></h2>
+             <h2 className='text-3xl font-bold text-white'>Prem<span className='text-secondary'>ium</span></h2>
              </Link>
             </div>
             <div className="hidden sm:ml-6 sm:block">
@@ -59,7 +60,7 @@ function Header({setOpen,open}:headerBar) {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      item.current ? 'bg-gray-900 text-white ' : 'text-white hover:text-yellow-600 ',
+                      item.current ? 'bg-gray-900 text-white ' : 'text-white hover:text-secondary ',
                       'rounded-md  text-sm font-light ',
                     )}
                   >
@@ -83,7 +84,7 @@ function Header({setOpen,open}:headerBar) {
            <Link to={"/cart"}>
             <button
               type="button"
-              className="relative rounded-full bg-yellow-500 p-1 text-black hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              className="relative rounded-full bg-secondary p-1 text-black hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
               <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>
@@ -93,9 +94,10 @@ function Header({setOpen,open}:headerBar) {
 
             </button>
             </Link>
-            <Link to={"/login"}>     <button className='py-2 px-10 bg-yellow-500 rounded-full ml-3 font-light text-sm'>
-             sigin
+            <Link to={"/login"}>     <button className='py-2 px-10 bg-secondary text-white rounded-full ml-3 font-normal text-sm'>
+             Sigin
             </button></Link>
+            <DarkModeToggle />
        
 
             {/* Profile dropdown */}
@@ -121,9 +123,11 @@ function Header({setOpen,open}:headerBar) {
                   </a>
                 </MenuItem>
                 <MenuItem>
+                <Link to={"/addVechicles"}>
                   <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                    Settings
+                   Admin
                   </a>
+                  </Link>
                 </MenuItem>
                 <MenuItem>
                   <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">

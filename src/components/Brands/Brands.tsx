@@ -12,8 +12,8 @@ const images = [
 
 const Brands: React.FC = () => {
   return (
-    <div className="flex items-center justify-center  bg-[#222] ">
-      <div className="relative overflow-hidden  h-32 bg-[#222] w-[1300px] m-auto shadow-lg">
+    <div className="flex items-center justify-center bg-[#222] dark:bg-black ">
+      <div className="relative overflow-hidden  h-32 bg-[#222] dark:bg-black   w-[1300px] m-auto shadow-lg">
         <div className="flex animate-scroll w-[calc(250px*14)]">
           {images.concat(images).map((src, index) => (
             <div className="w-full h-full" key={index}>

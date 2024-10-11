@@ -9,7 +9,7 @@ import CarFleet from '../../components/CarFleet/CarFleet'
 import AddVehicle from '../../components/Admins/AddCars/AddVehicle'
 import AdminHeader from '../../components/Admins/AdminHeader/AdminHeader'
 import AllVechicles from '../../components/Admins/AllVehicles/AllVechicles'
-import CarDetails from '../../components/CarDetails/CarDetails'
+import UserManagement from '../../components/Admins/AdminUserMangement/UserManagement'
 
 
 
@@ -23,13 +23,17 @@ function HomePages() {
           <CarRentalForm/>
           <Carousel/>
           <CarFleet/>
-      
           <Brands/>
           <Footer/>
-          <AddVehicle/>
-          <AdminHeader/>
-          <AllVechicles/>
-            <CarDetails/>
+          <UserManagement/>
+         
+       
+         
+       
+
+         
+        
+           
    
 
     </div>

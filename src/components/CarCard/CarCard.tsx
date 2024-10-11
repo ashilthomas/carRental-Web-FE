@@ -1,10 +1,12 @@
 import React from "react";
 import { FaDoorOpen, FaUserFriends, FaCogs, FaSuitcase } from "react-icons/fa";
 import { IVehicle } from "../../Redux/vechicleSlice";
+import { Link } from "react-router-dom";
 
 
 
 const CarCard: React.FC<IVehicle> = ({
+  _id,
   carModel,
   year,
   pricePerDay,
@@ -20,8 +22,8 @@ const CarCard: React.FC<IVehicle> = ({
   return (
     <div className="max-w-sm bg-[#222]  text-white rounded-lg overflow-hidden shadow-lg">
       {/* Car Image */}
-      <img
-        className="w-full h-48 object-cover"
+      <img 
+        className="w-full cursor-pointer h-48 object-cover hover:scale-110 duration-300 ease-in-out "
         src={carImage}
         alt={carModel}
       />
@@ -73,13 +75,18 @@ const CarCard: React.FC<IVehicle> = ({
         {/* Price and Button */}
         <div className="mt-6">
           <div className="text-2xl font-bold text-orange-500">${pricePerDay}<span className="text-sm">/day</span></div>
-          <button className="mt-4 w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition">
+          <Link to={`/cardetails/${_id}`}>
+          <button className="mt-4 w-full bg-orange-500 hover:-translate-y-2 duration-300 ease-in-out text-white py-2 rounded-full hover:bg-orange-600 transition">
         {
           available == true? "Book":"Not available"
         }
           </button>
+          </Link>
         </div>
       </div>
+
+      
+
     </div>
   );
 };

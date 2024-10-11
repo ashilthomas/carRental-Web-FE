@@ -58,12 +58,12 @@ export default function HeroCarousel() {
             </h1>
             <div className='flex gap-6' >
             <p className="text-3xl lg:text-lg  text-white mb-8">{slide.subtitle}</p>
-            <div className="text-2xl text-yellow-400 font-semibold mb-8">{slide.price}</div>
+            <div className="text-2xl text-secondary font-semibold mb-8">{slide.price}</div>
             </div>
             
 
             <div className="flex space-x-4">
-              <button className="bg-yellow-400 text-black px-12 pb-5 pt-5 rounded-full text-sm font-medium hover:bg-yellow-500 transition duration-300">
+              <button className="bg-secondary text-white px-12 pb-5 pt-5 rounded-full text-sm font-medium hover:bg-yellow-500 transition duration-300">
                 View Details
               </button>
               <button className="bg-transparent border border-white text-white px-12 pb-5 pt-5 rounded-full text-sm font-medium hover:bg-white hover:text-black transition duration-300">
@@ -84,6 +84,8 @@ export default function HeroCarousel() {
           />
         ))}
       </div>
+
+
     </section>
   );
 }

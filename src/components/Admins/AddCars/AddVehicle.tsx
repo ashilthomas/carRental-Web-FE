@@ -8,13 +8,14 @@ import InputField from '../../InputField/InputField';
 import SelectField from '../../SelectField/SelectField';
 import TextAreaField from '../../TextAreaField/TextAreaField';
 import AdminSlider from '../AdminSlider/AdminSlider';
-import { useAppDispatch } from '../../../hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { openAdminSlide } from '../../../Redux/globelSlice';
 import axios from 'axios';
 
 
 const AddVehicle: React.FC = () => {
   const dispatch = useAppDispatch();
+  const {isOpen} = useAppSelector((state)=>state.global)
   const { register, handleSubmit, formState: { errors } } = useForm<IVehicle>({
     resolver: yupResolver(vehicleSchema),
 });
@@ -67,16 +68,24 @@ const onSubmit = async (data: IVehicle) => {
   };
 
   return (
-    <section className="flex bg-[#000]">
-      <AdminSlider />
+    <>
+    
+    <div className="flex bg-primary">
+    <AdminSlider />
+   
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <span className="text-3xl text-white cursor-pointer mb-3" onClick={openNav}>
-          &#9776;
-        </span>
-        <form
+      <div className="max-w-7xl mx-auto  py-6 sm:px-6 lg:px-8">{
+isOpen?"":
+
+<span className="text-3xl text-white cursor-pointer mb-3" onClick={openNav}>
+&#9776;
+</span>
+
+        }
+    
+        <form 
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-[#1b1b1b] shadow-md rounded-lg p-6 space-y-6 text-white"
+          className="bg-[#1b1b1b] shadow-md rounded-lg p-6 space-y-6 text-white "
         >
           <h2 className="text-2xl font-semibold text-white mb-4">Add a Vehicle</h2>
 
@@ -209,13 +218,14 @@ const onSubmit = async (data: IVehicle) => {
 
           <button
             type="submit"
-            className="w-full sm:w-auto mt-4 px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+            className="w-full sm:w-auto mt-4 px-6 py-2 bg-secondary text-white font-semibold rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
           >
             Add Vehicle
           </button>
         </form>
       </div>
-    </section>
+    </div>
+    </>
   );
 };
 

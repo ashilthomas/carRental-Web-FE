@@ -5,7 +5,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#222] text-white py-[100px] px-5">
+    <footer className=" dark:bg-black  bg-[#222]  text-white py-[100px] px-5">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Contact Information */}
         <div className="space-y-4">

@@ -75,9 +75,9 @@ function CarFleet() {
       };
     
   return (
-    <section className=" bg-[#222] pb-[100px] pt-[100px]">
+    <section className="bg-[#222] dark:bg-black pb-[100px] pt-[100px]">
     <div className='bg-[#222] flex items-center justify-center'>
-      <div className='h-[50px] w-[1px] bg-yellow-500 mb-[100px]'>
+      <div className='h-[50px] w-[1px] bg-secondary mb-[100px]'>
 
       </div>
     </div>

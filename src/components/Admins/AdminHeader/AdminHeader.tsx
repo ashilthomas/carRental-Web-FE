@@ -4,7 +4,7 @@ const AdminHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-blue-600 text-white shadow-md">
+    <header className="bg-[#1b1b1b] text-white shadow-md">
       <div className="w-[1300px] mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <div className="text-xl font-bold">
