@@ -48,7 +48,7 @@ export const vehicleSchema = yup.object().shape({
     carModel: yup.string().required('Model is required'),
     year: yup.number().required('Year is required').min(1900, 'Year must be after 1900'),
     pricePerDay: yup.number().required('Price is required').positive('Price must be a positive number'),
-    available: yup.boolean().required('Availability is required'),
+    available: yup.string().required('Availability is required'),
     carImage: yup
     .mixed()
     .required('A file is required')

@@ -26,10 +26,7 @@ const UserManagement: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const handleEditUser = (userId: string) => {
-    // Implement edit user functionality
-    console.log(`Editing user ${userId}`);
-  };
+
 
   const handleDeleteUser = (userId: string) => {
     // Implement delete user functionality
@@ -37,17 +34,13 @@ const UserManagement: React.FC = () => {
     console.log(`Deleted user ${userId}`);
   };
 
-  const handleToggleStatus = (userId: string) => {
-    setUsers(users.map(user =>
-      user.id === userId ? { ...user, status: user.status === 'active' ? 'banned' : 'active' } : user
-    ));
-  };
+
 
   return (
-    <div className="mt-8">
+    <div className="mt-2">
       <table className="min-w-full bg-white shadow-md rounded-lg">
         <thead>
-          <tr className="bg-gray-800 text-white">
+          <tr className="bg-[#1b1b1b] text-white rounded-lg">
             <th className="py-4 px-6">Name</th>
             <th className="py-4 px-6">Email</th>
             <th className="py-4 px-6">Role</th>
@@ -55,9 +48,9 @@ const UserManagement: React.FC = () => {
             <th className="py-4 px-6">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className='bg-gray-800'>
           {users.map(user => (
-            <tr key={user.id} className="text-center border-b">
+            <tr key={user.id} className="text-center text-white border-b">
               <td className="py-4 px-6">{user.name}</td>
               <td className="py-4 px-6">{user.email}</td>
               <td className="py-4 px-6">{user.role}</td>
@@ -65,23 +58,13 @@ const UserManagement: React.FC = () => {
                 {user.status}
               </td>
               <td className="py-4 px-6 flex gap-2 justify-center">
-                <button
-                  onClick={() => handleEditUser(user.id)}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">
-                  Edit
-                </button>
+               
                 <button
                   onClick={() => handleDeleteUser(user.id)}
                   className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
                   Delete
                 </button>
-                <button
-                  onClick={() => handleToggleStatus(user.id)}
-                  className={`${
-                    user.status === 'active' ? 'bg-gray-500' : 'bg-green-500'
-                  } hover:bg-gray-600 text-white py-2 px-4 rounded`}>
-                  {user.status === 'active' ? 'Ban' : 'Activate'}
-                </button>
+               
               </td>
             </tr>
           ))}

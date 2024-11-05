@@ -1,43 +1,38 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import instance from '../../../Axios/Instance';
 import { setAdminVehicles, setError, setLoading, } from '../../../Redux/vechicleSlice';
 import AdminSlider from '../AdminSlider/AdminSlider';
-import { openAdminSlide } from '../../../Redux/globelSlice';
+import { toggleAdminSlide } from '../../../Redux/globelSlice';
 import Loader from '../../Loader/Loader';
-
-
-
+import DeleteModel from '../../DeleteModel/DeleteModel';
+import EditModel from '../../EditModel/EditModel';
 
 function AllVechicles() {
-  const dispatch = useAppDispatch(); 
-  const { adminVehicles ,loading,error} = useAppSelector((state) => state.vehicles);
+  const dispatch = useAppDispatch();
+  const { adminVehicles, loading, error } = useAppSelector((state) => state.vehicles);
 
-  
-  
-
-  // Fetch vehicles function
   const fetchVehicles = useCallback(async () => {
-    dispatch(setLoading()); 
+    dispatch(setLoading());
     try {
-      const response = await instance.get('vechicle/getallvechicles'); 
-      console.log("res",response.data);
-      
-      dispatch(setAdminVehicles(response.data.vechicle)); // Dispatch action to set vehicles
+      const response = await instance.get('vechicle/getallvechicles');
+      console.log("res", response.data);
+
+      dispatch(setAdminVehicles(response.data.vechicle)); 
     } catch (err: any) {
-      dispatch(setError('Failed to fetch vehicles')); // Dispatch error action
+      dispatch(setError('Failed to fetch vehicles')); 
     }
-  }, [dispatch]);
+  }, [dispatch,]);
 
   // Toggle vehicle availability
   const toggleAvailability = useCallback(async (vehicleId: string, currentAvailability: boolean) => {
     try {
       await instance.put(`vechicle/updateavilablity/${vehicleId}`, {
-        available: !currentAvailability, // Toggle the availability value
+        available: !currentAvailability, 
       });
 
-      // Optional: Refetch vehicles or manually update the availability state here
-      fetchVehicles(); // Refetch the vehicles after updating availability
+     
+      fetchVehicles(); 
     } catch (error) {
       console.error('Error toggling vehicle availability:', error);
     }
@@ -45,23 +40,23 @@ function AllVechicles() {
 
 
   useEffect(() => {
-    fetchVehicles(); 
+    fetchVehicles();
   }, [fetchVehicles]);
 
   const openNav = () => {
-    dispatch(openAdminSlide());
+    dispatch(toggleAdminSlide());
   };
-  if (loading) return <Loader/>; // Loading state
-  if (error) return <p>Error: {error}</p>; // Error state
+  if (loading) return <Loader />; 
+  if (error) return <p>Error: {error}</p>; 
 
   return (
 
-      <div className="overflow-x-auto flex bg-primary ">
-        <AdminSlider/>
-        <span className="text-3xl ml-4 text-black cursor-pointer mb-3" onClick={openNav}>
-&#9776;
-</span>
-<div className='w-[1300px] m-auto py-4 pr-4'>
+    <div className="overflow-x-auto flex bg-primary h-[100vh] ">
+      <AdminSlider />
+      <span className="text-3xl ml-4  cursor-pointer mb-3 text-white" onClick={openNav}>
+        &#9776;
+      </span>
+      <div className='w-[1300px] m-auto py-4 pr-4'>
 
 
         <table className="min-w-full dark:bg-gray-900 bg-white  shadow-md rounded-lg overflow-hidden">
@@ -86,12 +81,13 @@ function AllVechicles() {
                   </div>
                 </td>
                 <td className="px-6 py-4">{item?.carModel}</td>
-                <td className="px-6 py-4">{item?.pricePerDay}</td>
+               
+                <EditModel id={item._id} fetchVehicles={fetchVehicles} value={item.pricePerDay} />
                 <td className="px-6 py-4">
-                  {/* Dropdown for toggling vehicle availability */}
+                 
                   <select
                     value={item.available ? 'available' : 'not available'}
-                    onChange={() => toggleAvailability(item._id, item.available)} // Pass current availability to toggle function
+                    onChange={() => toggleAvailability(item._id, item.available)} 
                     className="bg-gray-200 p-2 rounded"
                   >
                     <option value="available">Available</option>
@@ -99,9 +95,7 @@ function AllVechicles() {
                   </select>
                 </td>
                 <td className="px-6 py-4">
-                  <button className="px-3 py-1 rounded-full text-sm font-semibold bg-red-500 text-white">
-                    Delete
-                  </button>
+                  <DeleteModel id={item._id} fetchVehicles={fetchVehicles} />
                 </td>
                 <td className="px-6 py-4">
                   <button className="p-2 bg-gray-200 rounded-full">
@@ -121,8 +115,8 @@ function AllVechicles() {
             ))}
           </tbody>
         </table></div>
-      </div>
-  
+    </div>
+
   );
 }
 

@@ -6,12 +6,14 @@ import Carousel from '../../components/Categories/Categories'
 import Brands from '../../components/Brands/Brands'
 import Footer from '../../components/Footer/Footer'
 import CarFleet from '../../components/CarFleet/CarFleet'
-import AddVehicle from '../../components/Admins/AddCars/AddVehicle'
-import AdminHeader from '../../components/Admins/AdminHeader/AdminHeader'
-import AllVechicles from '../../components/Admins/AllVehicles/AllVechicles'
+
 import UserManagement from '../../components/Admins/AdminUserMangement/UserManagement'
+import DashBoard from '../../components/Admins/DashBoard/DashBoard'
+import BarChart from '../../components/BarChart/BarChart'
+import AllBookedVehicle from '../../components/Admins/AllBookedVehicle/AllBookedVehicle'
+import DeleteModel from '../../components/DeleteModel/DeleteModel'
 
-
+  // Sample data for the chart
 
 
 
@@ -25,7 +27,10 @@ function HomePages() {
           <CarFleet/>
           <Brands/>
           <Footer/>
-          <UserManagement/>
+        
+          {/* <AllBookedVehicle/> */}
+         
+        
          
        
          

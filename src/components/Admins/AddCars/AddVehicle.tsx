@@ -9,7 +9,7 @@ import SelectField from '../../SelectField/SelectField';
 import TextAreaField from '../../TextAreaField/TextAreaField';
 import AdminSlider from '../AdminSlider/AdminSlider';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { openAdminSlide } from '../../../Redux/globelSlice';
+import {  toggleAdminSlide } from '../../../Redux/globelSlice';
 import axios from 'axios';
 
 
@@ -29,7 +29,7 @@ const onSubmit = async (data: IVehicle) => {
       formData.append('carModel', data.carModel);
       formData.append('year', data.year.toString());
       formData.append('pricePerDay', data.pricePerDay.toString());
-      formData.append('available', data.available ? 'true' : 'false');
+      formData.append('available', data.available );
       formData.append('brand', data.brand);
       formData.append('type', data.type);
       formData.append('description', data.description);
@@ -64,7 +64,7 @@ const onSubmit = async (data: IVehicle) => {
   
 
   const openNav = () => {
-    dispatch(openAdminSlide());
+    dispatch( toggleAdminSlide());
   };
 
   return (
@@ -127,8 +127,9 @@ isOpen?"":
               register={register}
               error={errors.available}
               options={[
-                { label: 'Yes', value: 'true' },
-                { label: 'No', value: 'false' },
+                { label: 'Available', value: 'Available' },
+                { label: 'Maintance', value: 'Maintance' },
+                { label: 'UnAvailable', value: 'UnAvailable' },
               ]}
               className="py-2 border border-gray-300 rounded-md w-full bg-[#999]"
             />

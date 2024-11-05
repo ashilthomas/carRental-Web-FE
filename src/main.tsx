@@ -19,6 +19,7 @@ import AddVechiclesPage from './pages/AddVechicles/AddVechicles.tsx';
 import CarDetails from './components/CarDetails/CarDetails.tsx'; // Import the correct component
 import NotFound from './components/NotFound/NotFound.tsx';
 import AllVechicles from './components/Admins/AllVehicles/AllVechicles.tsx';
+import DashBoard from './components/Admins/DashBoard/DashBoard.tsx';
  // Create a 404 Not Found page
 
 const router = createBrowserRouter([
@@ -61,6 +62,9 @@ const router = createBrowserRouter([
       {
         path:"/adminAllVehicle",
         element:<AllVechicles/>
+      },{
+        path:"/adminDashbord",
+        element:<DashBoard/>
       }
     ],
   },

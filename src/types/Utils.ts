@@ -7,7 +7,7 @@ export interface IVehicle {
     carModel: string;
     year: number;
     pricePerDay: number;
-    available: boolean; // NonNullable<boolean | undefined> can simply be boolean
+    available: string; // NonNullable<boolean | undefined> can simply be boolean
     carImage: FileList;
     brand: string;
     type: string;

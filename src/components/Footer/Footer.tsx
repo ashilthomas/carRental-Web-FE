@@ -2,8 +2,13 @@ import React from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa6";
+import { useAppSelector } from "../../hooks";
 
 const Footer = () => {
+  const  userData = useAppSelector((state)=>state.userData)
+ 
+
+  
   return (
     <footer className=" dark:bg-black  bg-[#222]  text-white py-[100px] px-5">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">

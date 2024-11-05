@@ -34,8 +34,8 @@ const schema = yup.object().shape({
 
  }
   interface FormData {
-    _id:string,
-    vehicleId: string;
+    vehicleId:string,
+
     email: string;
     phone: string;
     carType: string;
@@ -44,6 +44,7 @@ const schema = yup.object().shape({
     pickUpDate: string;
     dropOffDate: string;
     additionalNote?: string;
+  
   }
 
 const BookingForm: React.FC <BookingFormData>= ({vehicle}) => {
@@ -63,19 +64,29 @@ const BookingForm: React.FC <BookingFormData>= ({vehicle}) => {
  
 
       // Form submission handler
-      const onSubmit = (data:FormData ) => {
+      const onSubmit = async (data: FormData) => {
         console.log(data);
-        
-        const formData = new FormData();
-     
-     
-        formData.append(' vehicleId', data._id);
-        formData.append(' userId',data.carType );
-        formData.append(' startDate', data.pickUpDate);
-        formData.append('endDate', data.dropOffDate);
-
-        
       
+        const formData = new FormData();
+        console.log('Vehicle ID before appending:', data.vehicleId);
+      
+        // Remove spaces from the formData keys
+        formData.append('vehicleId', data.vehicleId);  // Corrected ' vehicleId' -> 'vehicleId'
+        // formData.append('userId', data.carType); // Corrected ' userId' -> 'userId'
+        formData.append('startDate', data.pickUpDate);
+        formData.append('endDate', data.dropOffDate);
+      
+        try {
+          // Send the formData in the POST request
+          const response = await instance.post('booking/vehiclebooking', formData, {
+            headers: {
+              'Content-Type': 'application/json' // Make sure to set the content type as JSON
+            }
+          });
+          console.log(response);
+        } catch (error) {
+          console.error('Error during booking:', error);
+        }
       };
   return (
 

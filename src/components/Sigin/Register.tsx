@@ -1,17 +1,89 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import instance from '../../Axios/Instance';
+import { useToast } from '@chakra-ui/react'
+
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setUserData } from '../../Redux/userSlice';
+
+// Define the form schema with Yup
+const schema = yup.object().shape({
+  username: yup.string().required('Username is required'),
+  email: yup.string().email('Invalid email format').required('Email is required'),
+  password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+});
+
+
+interface IFormInputs {
+  username: string;
+  email: string;
+  password: string;
+}
 
 const Register: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const dispatch =useAppDispatch()
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Add login logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
+const navigate =useNavigate()
+  
+  const toast = useToast()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInputs>({
+    resolver: yupResolver(schema),
+  });
+
+  // Submit handler
+  const onSubmit: SubmitHandler<IFormInputs> = async(data) => {
+    console.log(data);
+    
+   
+    
+
+ 
+
+    const response = await instance.post('adduser/register', data,{withCredentials:true});
+
+    console.log(response.data);
+      // Assuming response.data has user and token properties
+      const userData = response.data.user;
+      const token = response.data.token;
+      sessionStorage.setItem("token",token);
+  
+      dispatch(setUserData({ userData, token }));
+
+    if(response.data.success){
+
+ 
+            toast({
+              title:response.data.message,
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+            })
+            navigate("/")
+           
+      
+
+    }else{
+      toast({
+        title:response.data.message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+
+
+    }
+  
+
+  
+             
   };
 
   return (
@@ -23,64 +95,64 @@ const Register: React.FC = () => {
 
         {/* Login Form */}
         <form
-          onSubmit={handleLogin}
+          onSubmit={handleSubmit(onSubmit)}
           className="relative bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-8 shadow-lg"
         >
           <h3 className="text-3xl font-semibold text-white text-center mb-6">
-            Login Here
+            Register Here
           </h3>
 
           {/* Username Input */}
           <label htmlFor="username" className="block text-white text-sm font-medium mb-2">
-            Username
+           Name
           </label>
           <input
-            type="text"
+            {...register('username')}
             id="username"
-            placeholder="Email or Phone"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="username"
             className="w-full px-4 py-3 bg-white bg-opacity-20 text-white placeholder-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <label htmlFor="username" className="block text-white text-sm font-medium mb-2">
-           Email
+          {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
+
+          {/* Email Input */}
+          <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+            Email
           </label>
           <input
-            type="text"
+            {...register('email')}
             id="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-3 bg-white bg-opacity-20 text-white placeholder-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
 
           {/* Password Input */}
           <label htmlFor="password" className="block text-white text-sm font-medium mb-2">
             Password
           </label>
           <input
+            {...register('password')}
             type="password"
             id="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-3 bg-white bg-opacity-20 text-white placeholder-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 
-          {/* Login Button */}
+          {/* Register Button */}
           <button
             type="submit"
             className="w-full bg-yellow-500 text-gray-900 font-bold py-3 rounded-md hover:bg-gray-100 transition duration-200"
           >
-            Log In
+            Register
           </button>
-          <div>
-            <h6>not loged 
-              <Link to={"/register"}> <span>
-                    Register
-                </span>
+
+          <div className="mt-4 text-center">
+            <h6 className="text-white">
+             already you have an account?{' '}
+              <Link to="/login" className="text-yellow-500 underline">
+                Login
               </Link>
-               
             </h6>
           </div>
 

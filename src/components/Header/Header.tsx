@@ -123,7 +123,7 @@ function Header({setOpen,open}:headerBar) {
                   </a>
                 </MenuItem>
                 <MenuItem>
-                <Link to={"/addVechicles"}>
+                <Link to={"/adminDashbord"}>
                   <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                    Admin
                   </a>
