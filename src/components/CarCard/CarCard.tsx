@@ -20,7 +20,7 @@ const CarCard: React.FC<IVehicle> = ({
 
 }) => {
   return (
-    <div className="max-w-sm bg-[#222]  text-white rounded-lg overflow-hidden shadow-lg">
+    <div className=" bg-[#222]  text-white rounded-lg overflow-hidden shadow-lg">
       {/* Car Image */}
       <img 
         className="w-full cursor-pointer h-48 object-cover hover:scale-110 duration-300 ease-in-out "

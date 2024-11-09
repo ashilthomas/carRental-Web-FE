@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import  { useCallback, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import instance from '../../../Axios/Instance';
 import { setAdminVehicles, setError, setLoading, } from '../../../Redux/vechicleSlice';
@@ -9,6 +9,7 @@ import DeleteModel from '../../DeleteModel/DeleteModel';
 import EditModel from '../../EditModel/EditModel';
 
 function AllVechicles() {
+
   const dispatch = useAppDispatch();
   const { adminVehicles, loading, error } = useAppSelector((state) => state.vehicles);
 
@@ -16,7 +17,7 @@ function AllVechicles() {
     dispatch(setLoading());
     try {
       const response = await instance.get('vechicle/getallvechicles');
-      console.log("res", response.data);
+   
 
       dispatch(setAdminVehicles(response.data.vechicle)); 
     } catch (err: any) {
@@ -51,12 +52,10 @@ function AllVechicles() {
 
   return (
 
-    <div className="overflow-x-auto flex bg-primary h-[100vh] ">
+    <div className="overflow-x-auto flex bg-primary h-[100vh]  ">
       <AdminSlider />
-      <span className="text-3xl ml-4  cursor-pointer mb-3 text-white" onClick={openNav}>
-        &#9776;
-      </span>
-      <div className='w-[1300px] m-auto py-4 pr-4'>
+    
+      <div className='w-[1300px] m-auto py-4 pr-4 ml-5'>
 
 
         <table className="min-w-full dark:bg-gray-900 bg-white  shadow-md rounded-lg overflow-hidden">

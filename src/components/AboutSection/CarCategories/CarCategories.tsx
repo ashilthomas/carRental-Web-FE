@@ -153,13 +153,13 @@ function CarCategories() {
   if (loading) return <Loader />;
   if(error) return <Loader />;
   return (
-    <div className="bg-[#1b1b1b]">
+    <div className="bg-[#1b1b1b] dark:bg-black">
     <div>
       {/* Mobile filter dialog */}
       <Dialog open={mobileFiltersOpen} onClose={setMobileFiltersOpen} className="relative z-40 lg:hidden">
         <DialogBackdrop
           transition
-          className="fixed inset-0 bg-[#1b1b1b] bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
+          className="fixed inset-0  bg-[#1b1b1b] bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
         />
 
         <div className="fixed inset-0 z-40 flex">
@@ -244,7 +244,7 @@ function CarCategories() {
 </button>
           </form>
           {
-            //dslkljfldjsfljdslfjldsfjlsdfjlsdj
+            
           }
 
           <div className="flex items-center">
@@ -390,7 +390,7 @@ function CarCategories() {
 </div>
     </div>
   </div>
-  <div className="bg-[#1b1b1b]">
+  <div className="bg-[#1b1b1b] dark:bg-black">
       {/* Your UI content */}
       <div className="flex justify-center mt-8">
   {/* Previous Button */}

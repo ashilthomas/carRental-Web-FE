@@ -1,12 +1,20 @@
 import React, { useState } from "react";
+import { useAppDispatch } from "../../../hooks";
+import { toggleAdminSlide } from "../../../Redux/globelSlice";
 
 const AdminHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch=useAppDispatch()
 
   return (
     <header className="bg-[#1b1b1b] text-white shadow-md">
       <div className="w-[1300px] mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
+        <div className="md:hidden">
+          <button onClick={()=>dispatch(toggleAdminSlide())}>
+          <svg xmlns="http://www.w3.org/2000/svg" className="text-white" height="40px" viewBox="0 -960 960 960" width="40px" fill="#ffff"><path d="M120-240v-66.67h720V-240H120Zm0-206.67v-66.66h720v66.66H120Zm0-206.66V-720h720v66.67H120Z"/></svg>
+          </button>
+        </div>
         <div className="text-xl font-bold">
           <a href="/">Admin Dashboard</a>
         </div>
@@ -23,22 +31,10 @@ const AdminHeader: React.FC = () => {
         <div className="md:hidden">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="focus:outline-none"
+            className="focus:outline-none text-white"
+            
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+         onClick
           </button>
         </div>
       </div>

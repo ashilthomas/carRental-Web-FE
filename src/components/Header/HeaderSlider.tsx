@@ -2,8 +2,13 @@ import React, { useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { headerBar } from '../../types/Utils'
+import useAuth from '../../CoustomHooks/useAuth;
+
+
+import { Link } from 'react-router-dom'
 
 function HeaderSlider({open,setOpen}:headerBar) {
+  const {isAuthenticated}=useAuth()
     const navigation = [
   
         { name: 'Home', href: '#', current: false },
@@ -57,6 +62,14 @@ function HeaderSlider({open,setOpen}:headerBar) {
                     }
                       
                     </ul>
+                    {
+                     isAuthenticated&&
+                               <Link to={"/login"}>     <button className='py-2 px-10 bg-secondary text-white rounded-full ml-3 font-normal text-sm'>
+             Sigin
+            </button></Link>
+                    }
+           
+                    
                 </div>
               </div>
             </DialogPanel>

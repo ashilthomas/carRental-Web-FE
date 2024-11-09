@@ -8,7 +8,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-    isOpen:false,
+    isOpen:true,
     isBookingForm:false
 
 };

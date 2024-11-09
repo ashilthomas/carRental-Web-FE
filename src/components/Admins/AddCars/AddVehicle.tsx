@@ -16,6 +16,8 @@ import axios from 'axios';
 const AddVehicle: React.FC = () => {
   const dispatch = useAppDispatch();
   const {isOpen} = useAppSelector((state)=>state.global)
+  console.log(isOpen);
+  
   const { register, handleSubmit, formState: { errors } } = useForm<IVehicle>({
     resolver: yupResolver(vehicleSchema),
 });
